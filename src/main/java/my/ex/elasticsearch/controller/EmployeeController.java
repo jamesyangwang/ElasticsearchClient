@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import my.ex.elasticsearch.model.Employee;
+import my.ex.elasticsearch.service.EmployeeService;
 import my.ex.elasticsearch.util.ElasticSearchUtils;
 
 @RestController
@@ -21,6 +22,9 @@ public class EmployeeController {
 
 	@Autowired
 	private ElasticSearchUtils esu;
+	
+	@Autowired
+	private EmployeeService es;
 	
 	@PostMapping
 	public Employee add(@RequestBody Employee employee) {
