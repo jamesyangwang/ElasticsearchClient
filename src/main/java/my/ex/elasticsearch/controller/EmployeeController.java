@@ -1,6 +1,5 @@
 package my.ex.elasticsearch.controller;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;
@@ -27,13 +26,14 @@ public class EmployeeController {
 	private EmployeeService es;
 	
 	@PostMapping
-	public Employee add(@RequestBody Employee employee) {
-		return new Employee("James", "Wang");
+	public String add(@RequestBody Employee employee) {
+		if (employee.getFirstname() == null || employee.getLastname() == null) return "Invalid input!!!";
+		return es.addEmployee(employee);
 	}
 
 	@GetMapping("/{name}")
 	public List<Employee> findByName(@PathVariable("name") String name) {
-		return Arrays.asList(new Employee[] {new Employee("James", "Wang"), new Employee("Peter", "Tang")});
+		return es.searchEmployees(name);
 	}
 	
 	@GetMapping("/clusterHealth")
