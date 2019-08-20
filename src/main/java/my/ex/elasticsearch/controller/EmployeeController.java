@@ -31,9 +31,9 @@ public class EmployeeController {
 		return es.addEmployee(employee);
 	}
 
-	@GetMapping("/{name}")
-	public List<Employee> findByName(@PathVariable("name") String name) {
-		return es.searchEmployees(name);
+	@GetMapping("/{keyword}")
+	public List<Employee> findByName(@PathVariable("keyword") String keyword) {
+		return es.searchEmployees(keyword);
 	}
 	
 	@GetMapping("/clusterHealth")
