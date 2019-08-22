@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.slf4j.Slf4j;
 
+import my.ex.elasticsearch.model.Field;
 import my.ex.elasticsearch.model.User;
 import my.ex.elasticsearch.util.ElasticSearchUtils;
 
@@ -28,7 +29,21 @@ public class UserService {
     
     public List<User> searchUsers(String keyword) {
     	SearchHit[] hits = esu.search(index, keyword);
-    	List<User> res = new ArrayList<>();
+   		return buildResultList(hits);
+    }
+	
+    public List<User> getAllUsers() {
+    	SearchHit[] hits = esu.getAll(index);
+   		return buildResultList(hits);
+    }
+	
+    public List<User> getUsersByField(Field field) {
+    	SearchHit[] hits = esu.matchField(index, field);
+   		return buildResultList(hits);
+    }
+
+	private List<User> buildResultList(SearchHit[] hits) {
+		List<User> res = new ArrayList<>();
     	if (hits != null && hits.length != 0) {
     		for (SearchHit hit : hits) {
     			String source = hit.getSourceAsString();
@@ -40,7 +55,16 @@ public class UserService {
 				} catch (IOException e) {}
     		}
     	}
-   		return res;
+		return res;
+	}
+	
+    public List<User> multiSearch(String keyword, Field field) {
+    	SearchHit[] hits = esu.multiSearch(index, keyword, field);
+   		return buildResultList(hits);
     }
-
+	
+    public List<User> searchTemplate(Field field) {
+    	SearchHit[] hits = esu.searchTemplate(index, field);
+   		return buildResultList(hits);
+    }
 }
