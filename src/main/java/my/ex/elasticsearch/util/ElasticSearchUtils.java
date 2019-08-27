@@ -28,6 +28,7 @@ import org.elasticsearch.client.indices.GetIndexRequest;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.util.ArrayUtils;
 import org.elasticsearch.common.xcontent.XContentType;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.rest.RestStatus;
 import org.elasticsearch.script.ScriptType;
@@ -261,5 +262,17 @@ public class ElasticSearchUtils {
 		} catch (IOException e) {}
     	
     	return new SearchHit[0];
+    }
+    
+    public SearchHit[] boolSearch(String index, Field termField, String keyword) {
+    	SearchRequest request = new SearchRequest(index);
+    	SearchSourceBuilder builder = new SearchSourceBuilder();
+    	BoolQueryBuilder query = QueryBuilders.boolQuery();
+    	query.must().add(QueryBuilders.termQuery(termField.getName(), termField.getValue()));
+    	query.filter().add(QueryBuilders.multiMatchQuery(keyword, "*"));
+    	builder.query(query);
+    	request.source(builder);
+    	
+    	return getSearchHit(request);
     }
 }

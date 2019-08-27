@@ -67,4 +67,9 @@ public class UserService {
     	SearchHit[] hits = esu.searchTemplate(index, field);
    		return buildResultList(hits);
     }
+    
+    public List<User> boolSearchUsers(Field term, String keyword) {
+    	SearchHit[] hits = esu.boolSearch(index, term, keyword);
+   		return buildResultList(hits);
+    }
 }

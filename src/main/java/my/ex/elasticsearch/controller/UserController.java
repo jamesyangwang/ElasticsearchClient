@@ -53,4 +53,9 @@ public class UserController {
 	public List<User> searchTemplate(@RequestBody Field field) {
 		return us.searchTemplate(field);
 	}
+	
+	@GetMapping("/bool/{keyword}")
+	public List<User> boolSearch(@PathVariable("keyword") String keyword, @RequestBody Field field) {
+		return us.boolSearchUsers(field, keyword);
+	}
 }
